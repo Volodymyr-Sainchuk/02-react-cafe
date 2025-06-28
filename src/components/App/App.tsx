@@ -2,36 +2,26 @@ import css from "./App.module.css";
 import CafeInfo from "../CafeInfo/CafeInfo";
 import VoteOptions from "../VoteOptions/VoteOptions";
 import VoteStats from "../VoteStats/VoteStats";
+import Notification from "../Notification/Notification";
 import { useState } from "react";
-
-export interface VoteType {
-  good: number;
-  neutral: number;
-  bad: number;
-}
+import type { VoteType, VoteKey } from "../../types/votes";
 
 export default function App() {
   const [votes, setVotes] = useState<VoteType>({ good: 0, neutral: 0, bad: 0 });
 
-  const handleVote = (key: keyof VoteType) => {
-    setVotes({
-      ...votes,
-      [key]: votes[key] + 1,
-    });
+  const handleVote = (key: VoteKey) => {
+    setVotes((prevVotes) => ({
+      ...prevVotes,
+      [key]: prevVotes[key] + 1,
+    }));
   };
 
   const resetVotes = () => {
-    setVotes({
-      bad: 0,
-      good: 0,
-      neutral: 0,
-    });
+    setVotes({ good: 0, neutral: 0, bad: 0 });
   };
 
   const totalVotes = votes.good + votes.neutral + votes.bad;
-
   const positiveRate = totalVotes ? Math.round((votes.good / totalVotes) * 100) : 0;
-
   const canReset = totalVotes > 0;
 
   return (
@@ -39,7 +29,7 @@ export default function App() {
       <CafeInfo />
       <VoteOptions onVote={handleVote} onReset={resetVotes} canReset={canReset} />
       {!totalVotes ? (
-        <p className={css.message}>No feedback yet</p>
+        <Notification message="No feedback yet" />
       ) : (
         <VoteStats votes={votes} totalVotes={totalVotes} positiveRate={positiveRate} />
       )}

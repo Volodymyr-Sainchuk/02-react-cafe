@@ -1,4 +1,9 @@
 import css from "./Notification.module.css";
-export default function Notification() {
-  return <p className={css.message}>No feedback yet</p>;
+
+interface NotificationProps {
+  message: string;
+}
+
+export default function Notification({ message }: NotificationProps) {
+  return <p className={css.message}>{message}</p>;
 }
