@@ -4,12 +4,12 @@ import VoteOptions from "../VoteOptions/VoteOptions";
 import VoteStats from "../VoteStats/VoteStats";
 import Notification from "../Notification/Notification";
 import { useState } from "react";
-import type { Votes } from "../../types/votes";
+import type { Votes, VoteType } from "../../types/votes";
 
 export default function App() {
   const [votes, setVotes] = useState<Votes>({ good: 0, neutral: 0, bad: 0 });
 
-  const handleVote = (key: keyof Votes) => {
+  const handleVote = (key: VoteType) => {
     setVotes((prevVotes) => ({
       ...prevVotes,
       [key]: prevVotes[key] + 1,
